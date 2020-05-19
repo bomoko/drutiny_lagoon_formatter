@@ -1,0 +1,15 @@
+{
+    "name": "drutiny/lagoon-formatter",
+    "type": "library",
+    "description": "Lagoon Formatter for Drutiny",
+    "authors": [
+        {"name": "Blaize Kaye", "email": "blaize.kaye@amazee.com"}
+    ],
+    "require": {
+        "drutiny/drutiny": "^2.3.0",
+        "symfony/yaml": "^3.2"
+    },
+    "psr-4": {
+        "Drutiny\\Amazee\\": "src/"
+    }
+}
