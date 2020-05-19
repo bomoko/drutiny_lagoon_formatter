@@ -9,7 +9,9 @@
         "drutiny/drutiny": "^2.3.0",
         "symfony/yaml": "^3.2"
     },
-    "psr-4": {
-        "Drutiny\\Amazee\\": "src/"
+    "autoload": {
+      "psr-4": {
+          "Drutiny\\Amazee\\": "src/"
+      }
     }
 }
