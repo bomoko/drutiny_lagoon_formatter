@@ -6,12 +6,19 @@
         {"name": "Blaize Kaye", "email": "blaize.kaye@amazee.com"}
     ],
     "require": {
-        "drutiny/drutiny": "^2.3.0",
-        "symfony/yaml": "^3.2"
+        "drutiny/drutiny": "^2.4.0",
+        "guzzlehttp/guzzle": "^6.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.0",
+        "squizlabs/php_codesniffer": "2.*",
+        "drupal/coder": "^8.2.0"
     },
     "autoload": {
-      "psr-4": {
-          "Drutiny\\Amazee\\": "src/"
-      }
-    }
+        "psr-4": {
+            "Drutiny\\Amazee\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
