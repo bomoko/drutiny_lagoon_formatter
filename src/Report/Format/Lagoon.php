@@ -21,12 +21,36 @@ class Lagoon extends JSON
      */
     protected $output;
 
-    protected $endpointUrl = "https://14fe9f9a-ae04-4d75-b37e-f23eceb0050d.mock.pstmn.io";
+    protected $endpointUrl = "";
+
+    protected const LAGOON_VARS = [
+      'LAGOON_SAFE_PROJECT',
+      'LAGOON_PROJECT',
+      'LAGOON_ENVIRONMENT',
+      'LAGOON_GIT_BRANCH',
+    ];
+
+    protected $lagoonInfo = [];
 
     public function __construct($options)
     {
         parent::__construct($options);
         $this->setFormat('lagoon');
+        $this->determineEndpointUrl();
+
+        foreach (self::LAGOON_VARS as $varName) {
+            if($val = getenv($varName)) {
+                $this->lagoonInfo[$varName] = $val;
+            } else {
+                $this->lagoonInfo[$varName] = "UNSET";
+            }
+        }
+    }
+
+
+    protected function determineEndpointUrl()
+    {
+        $this->endpointUrl = "https://14fe9f9a-ae04-4d75-b37e-f23eceb0050d.mock.pstmn.io";
     }
 
     protected function preprocessResult(
@@ -35,6 +59,7 @@ class Lagoon extends JSON
       Assessment $assessment
     ) {
         $schema = parent::preprocessResult($profile, $target, $assessment);
+        $schema['lagoonInfo'] = $this->lagoonInfo;
         return $schema;
     }
 
@@ -50,6 +75,12 @@ class Lagoon extends JSON
     {
         $this->sendToLagoon($variables);
         return json_encode($variables);
+    }
+
+    protected function renderMultiResult(array $variables)
+    {
+        $this->sendToLagoon($variables);
+        return $this->renderResult($variables);
     }
 
 }
