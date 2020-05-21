@@ -39,7 +39,7 @@ class Lagoon extends JSON
         $this->determineEndpointUrl();
 
         foreach (self::LAGOON_VARS as $varName) {
-            if($val = getenv($varName)) {
+            if ($val = getenv($varName)) {
                 $this->lagoonInfo[$varName] = $val;
             } else {
                 $this->lagoonInfo[$varName] = "UNSET";
@@ -50,7 +50,10 @@ class Lagoon extends JSON
 
     protected function determineEndpointUrl()
     {
-        $this->endpointUrl = "https://14fe9f9a-ae04-4d75-b37e-f23eceb0050d.mock.pstmn.io";
+        $this->endpointUrl = null;
+        if ($endpoint = getenv('LAGOON_DRUTINY_WEBHOOK_URL')) {
+            $this->endpointUrl = $endpoint;
+        }
     }
 
     protected function preprocessResult(
@@ -65,10 +68,12 @@ class Lagoon extends JSON
 
     protected function sendToLagoon($variables)
     {
-        $client = new Client();
-        $res = $client->request('POST', $this->endpointUrl, [
-          'json' => $variables,
-        ]);
+        if ($this->endpointUrl) {
+            $client = new Client();
+            $res = $client->request('POST', $this->endpointUrl, [
+              'json' => $variables,
+            ]);
+        }
     }
 
     protected function renderResult(array $variables)
