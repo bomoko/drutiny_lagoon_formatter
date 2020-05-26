@@ -28,6 +28,8 @@ class Lagoon extends JSON
       'LAGOON_PROJECT',
       'LAGOON_ENVIRONMENT',
       'LAGOON_GIT_BRANCH',
+      'LAGOON_DRUTINY_PROJECT_NAME',
+      'LAGOON_DRUTINY_ENVIRONMENT_NAME',
     ];
 
     protected $lagoonInfo = [];
@@ -45,6 +47,15 @@ class Lagoon extends JSON
                 $this->lagoonInfo[$varName] = "UNSET";
             }
         }
+
+        if(empty($this->lagoonInfo['LAGOON_DRUTINY_PROJECT_NAME']) || $this->lagoonInfo['LAGOON_DRUTINY_PROJECT_NAME'] == "UNSET") {
+            $this->lagoonInfo['LAGOON_DRUTINY_PROJECT_NAME'] = !empty($this->lagoonInfo['LAGOON_PROJECT']) ? $this->lagoonInfo['LAGOON_PROJECT'] : $this->lagoonInfo['LAGOON_SAFE_PROJECT'];
+        }
+
+        if(empty($this->lagoonInfo['LAGOON_DRUTINY_ENVIRONMENT_NAME']) || $this->lagoonInfo['LAGOON_DRUTINY_ENVIRONMENT_NAME'] == "UNSET") {
+            $this->lagoonInfo['LAGOON_DRUTINY_ENVIRONMENT_NAME'] = $this->lagoonInfo['LAGOON_GIT_BRANCH'];
+        }
+
     }
 
 
@@ -68,7 +79,7 @@ class Lagoon extends JSON
 
     protected function sendToLagoon($variables)
     {
-        if ($this->endpointUrl) {
+        if (!empty($this->endpointUrl)) {
             $client = new Client();
             $res = $client->request('POST', $this->endpointUrl, [
               'json' => $variables,
@@ -87,7 +98,6 @@ class Lagoon extends JSON
         $this->sendToLagoon($variables);
         return $this->renderResult($variables);
     }
-
 }
 
 ?>
