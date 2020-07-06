@@ -6,7 +6,6 @@
         {"name": "Blaize Kaye", "email": "blaize.kaye@amazee.com"}
     ],
     "require": {
-        "drutiny/drutiny": "^2.2.0",
         "guzzlehttp/guzzle": "^6.5"
     },
     "require-dev": {
